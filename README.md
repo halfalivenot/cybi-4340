@@ -174,3 +174,59 @@ So final architecture
                     ▼
              attacker_sessions
 ```
+
+## Explain this process  
+```
+Raw logs
+   ↓
+normalized_events
+   ↓
+sessionization
+   ↓
+sessionized_events
+   ↓
+session enrichment
+   ↓
+attacker_sessions
+```
+1. raw_logs - "What did Windows send me?"  
+This is our source data. Essentially what our Windows VM generates these events.  
+2. normalized_events - "Make every log look the same"  
+This means taking different Windows formats and putting them into a consistent schema.Normalization = "Put the useful information into consistent columns"  
+*Note: think about separting event_id and event_type or not. still need to figure that out if I do that  
+3. sessionization - "Which events belong together?"  
+Asking where does one attacker interaction begin and end?  
+4. sessionzed_events - "Add the session id to each event?"  
+sessionization = process of figuring out the sessions  
+sessionized events = your events after attaching a session id to them  
+Sessionizatio is the transformation; sessionzed_events is the resulting data  
+5. session enrichment - "What can I calculate about this session?"  
+6. attacker_sessions - "Store the final summary"  
+
+Could do this  
+```
+raw_logs
+    ↓
+SQL query/view
+    ↓
+normalized_events
+    ↓
+SQL query
+    ↓
+sessionized_events
+    ↓
+SQL query
+    ↓
+attacker_sessions
+```
+
+Or this  
+```
+1. raw_logs
+   ↓
+2. normalized_events
+   ↓
+3. attacker_sessions
+
+```
+It would probably be easier to do the second thing. 
